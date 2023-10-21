@@ -1,155 +1,114 @@
-// import 'package:flutter/material.dart';
-// import 'package:login_page_day_23/animation/FadeAnimation.dart';
+// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:wallet/auth.dart';
 
-// class LoginPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         elevation: 0,
-//         brightness: Brightness.light,
-//         backgroundColor: Colors.white,
-//         leading: IconButton(
-//           onPressed: () {
-//             Navigator.pop(context);
+class SignIn extends StatefulWidget {
+  // const SignIn({Key? key}) : super(key: key);
+
+  // final Function toggleView;
+  // SignIn({super.key,required this.toggleView});
+  // final toggleView;
+  // const SignIn({Key? key, this.toggleView}) : super(key: key);  
+  final Function toggleView;
+  const SignIn({super.key, required this.toggleView});
+
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+
+  final AuthService _auth = AuthService();
+
+  String email = '';
+  String password = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor : Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0.0,
+        title: const Text('Sign in to Wallet'),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              widget.toggleView();
+            }, 
+            icon: const Icon(Icons.person), 
+            label: const Text('Register'),
+          )
+        ],
+      ),
+      body: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        child: Form(child: Column(
+          children: [
+            const SizedBox(height: 20.0),
+            TextFormField(
+              onChanged: (val) {
+                setState(() => email = val);
+              },
+            ),
+            const SizedBox(height: 20.0),
+            TextFormField(
+              obscureText: true,
+              onChanged: (val) {
+                setState(() => password = val);
+              },
+            ),
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0))),
+              ),
+              onPressed: () async {
+                if (kDebugMode) {
+                  print(email);
+                  print(password);
+                }
+            }, 
+            child: const Text(
+              'Sign in',
+              style: TextStyle(
+                color: Colors.white,
+              )
+              ),
+            )
+          ],
+        ))
+      ),
+    );
+  }
+}
+
+// ElevatedButton(
+//           style: ButtonStyle(
+//             backgroundColor: MaterialStateProperty.all(Colors.black),
+//             shape: MaterialStateProperty.all(RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(25.0))),
+//           ),
+//           onPressed: () async {
+//             dynamic result = await _auth.signInAnon();
+//             if(result == null) {
+//               if (kDebugMode) {
+//                 print('error in sign in');
+//               }
+//             }
+//             else {
+//               if (kDebugMode) {
+//                 print('sign in successful');
+//                 print(result.uid);
+//               }
+//             }
 //           },
-//           icon: Icon(
-//             Icons.arrow_back_ios,
-//             size: 20,
-//             color: Colors.black,
-//           ),
-//         ),
-//       ),
-//       body: Container(
-//         height: MediaQuery.of(context).size.height,
-//         width: double.infinity,
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: <Widget>[
-//             Expanded(
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: <Widget>[
-//                   Column(
-//                     children: <Widget>[
-//                       FadeAnimation(
-//                           1,
-//                           Text(
-//                             "Login",
-//                             style: TextStyle(
-//                                 fontSize: 30, fontWeight: FontWeight.bold),
-//                           )),
-//                       SizedBox(
-//                         height: 20,
-//                       ),
-//                       FadeAnimation(
-//                           1.2,
-//                           Text(
-//                             "Login to your account",
-//                             style: TextStyle(
-//                                 fontSize: 15, color: Colors.grey[700]),
-//                           )),
-//                     ],
-//                   ),
-//                   Padding(
-//                     padding: EdgeInsets.symmetric(horizontal: 40),
-//                     child: Column(
-//                       children: <Widget>[
-//                         FadeAnimation(1.2, makeInput(label: "Email")),
-//                         FadeAnimation(1.3,
-//                             makeInput(label: "Password", obscureText: true)),
-//                       ],
-//                     ),
-//                   ),
-//                   FadeAnimation(
-//                       1.4,
-//                       Padding(
-//                         padding: EdgeInsets.symmetric(horizontal: 40),
-//                         child: Container(
-//                           padding: EdgeInsets.only(top: 3, left: 3),
-//                           decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(50),
-//                               border: Border(
-//                                 bottom: BorderSide(color: Colors.black),
-//                                 top: BorderSide(color: Colors.black),
-//                                 left: BorderSide(color: Colors.black),
-//                                 right: BorderSide(color: Colors.black),
-//                               )),
-//                           child: MaterialButton(
-//                             minWidth: double.infinity,
-//                             height: 60,
-//                             onPressed: () {},
-//                             color: Colors.greenAccent,
-//                             elevation: 0,
-//                             shape: RoundedRectangleBorder(
-//                                 borderRadius: BorderRadius.circular(50)),
-//                             child: Text(
-//                               "Login",
-//                               style: TextStyle(
-//                                   fontWeight: FontWeight.w600, fontSize: 18),
-//                             ),
-//                           ),
-//                         ),
-//                       )),
-//                   FadeAnimation(
-//                       1.5,
-//                       Row(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: <Widget>[
-//                           Text("Don't have an account?"),
-//                           Text(
-//                             "Sign up",
-//                             style: TextStyle(
-//                                 fontWeight: FontWeight.w600, fontSize: 18),
-//                           ),
-//                         ],
-//                       ))
-//                 ],
-//               ),
-//             ),
-//             FadeAnimation(
-//                 1.2,
-//                 Container(
-//                   height: MediaQuery.of(context).size.height / 3,
-//                   decoration: BoxDecoration(
-//                       image: DecorationImage(
-//                           image: AssetImage('assets/background.png'),
-//                           fit: BoxFit.cover)),
-//                 ))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget makeInput({label, obscureText = false}) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: <Widget>[
-//         Text(
-//           label,
+//           child: const Text('Sign in anon',
 //           style: TextStyle(
-//               fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+
+//           ),),
 //         ),
-//         SizedBox(
-//           height: 5,
-//         ),
-//         TextField(
-//           obscureText: obscureText,
-//           decoration: InputDecoration(
-//             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-//             enabledBorder: OutlineInputBorder(
-//                 borderSide: BorderSide(color: Colors.grey[400])),
-//             border: OutlineInputBorder(
-//                 borderSide: BorderSide(color: Colors.grey[400])),
-//           ),
-//         ),
-//         SizedBox(
-//           height: 30,
-//         ),
-//       ],
-//     );
-//   }
-// }

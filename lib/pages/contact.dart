@@ -1,4 +1,6 @@
 // import 'package:align_positioned/align_positioned.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:animate_do/animate_do.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,11 +25,10 @@ class _ContactPageState extends State<ContactPage> {
     getContactPermission();
   }
 
-  void getContactPermission() async{
-    if(await Permission.contacts.isGranted) {
+  void getContactPermission() async {
+    if (await Permission.contacts.isGranted) {
       fetchContacts();
-    }
-    else {
+    } else {
       await Permission.contacts.request();
     }
   }
@@ -173,8 +174,9 @@ class _ContactPageState extends State<ContactPage> {
                               CircleAvatar(
                                 radius: 30,
                                 backgroundColor: Colors.blueGrey[100],
-                                child : Text(
-                                  contacts[index].givenName![0], // Assuming givenName is a String
+                                child: Text(
+                                  contacts[index].givenName![
+                                      0], // Assuming givenName is a String
                                   style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.black,
@@ -219,57 +221,72 @@ class _ContactPageState extends State<ContactPage> {
               Container(
                 height: MediaQuery.of(context).size.height - 200,
                 padding: const EdgeInsets.only(left: 20),
-                child: isLoading ? const Center(child: CircularProgressIndicator() ,) : ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: contacts.length,
-                  itemBuilder: (context, index) {
-                    return FadeInRight(
-                      duration: Duration(milliseconds: (index * 100) + 500),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          children: <Widget>[
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: Colors.red[100],
-                                  child: Text(
-                                          contacts[index].givenName![0], // Assuming givenName is a String
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: contacts.length,
+                        itemBuilder: (context, index) {
+                          return FadeInRight(
+                            duration:
+                                Duration(milliseconds: (index * 100) + 500),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                children: <Widget>[
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.red[100],
+                                        child: Text(
+                                          contacts[index].givenName![
+                                              0], // Assuming givenName is a String
                                           style: const TextStyle(
                                             fontSize: 20,
                                             color: Colors.black,
                                           ),
                                         ),
-                                  // backgroundImage:
-                                  //     AssetImage(contacts[index].givenName![0]),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  contacts[index].givenName!,
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.black,
-                                size: 15,
+                                        // backgroundImage:
+                                        //     AssetImage(contacts[index].givenName![0]),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        contacts[index].givenName!,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.black,
+                                      size: 15,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => SendMoney(
+                                                  name: contacts[index]
+                                                      .givenName!,
+                                                  avatar: contacts[index]
+                                                      .givenName![0])));
+                                    },
+                                  ),
+                                ],
                               ),
-                              onPressed: () {},
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ])));
   }
@@ -299,7 +316,8 @@ class _ContactPageState extends State<ContactPage> {
                   radius: 30,
                   backgroundColor: Colors.green.shade100,
                   child: Text(
-                    contacts[index].givenName![0], // Assuming givenName is a String
+                    contacts[index]
+                        .givenName![0], // Assuming givenName is a String
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:animate_do/animate_do.dart';
 import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class _SendMoneyState extends State<SendMoney> {
   Widget build(BuildContext context) {
     String userEnteredAmount = amountmoney.text;
 
-    final _paymentItems = [
+    final paymentItems = [
       PaymentItem(
         label: 'Total',
         amount: userEnteredAmount,
@@ -151,7 +153,7 @@ class _SendMoneyState extends State<SendMoney> {
                           fontWeight: FontWeight.bold),
                       onSubmitted: (value) {
                         setState(() {
-                          amountmoney.text = "\$" + value + ".00";
+                          amountmoney.text = "\$$value.00";
                         });
                       },
                       onTap: () {
@@ -279,12 +281,13 @@ class _SendMoneyState extends State<SendMoney> {
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: Material(
                       elevation: 5,
-                      // borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(25),
                       color: Colors.black,
                       child: GooglePayButton(
+        
                         paymentConfiguration: PaymentConfiguration.fromJsonString(
                                 defaultGooglePay),
-                        paymentItems: _paymentItems,
+                        paymentItems: paymentItems,
                         type: GooglePayButtonType.pay,
                         // margin: const EdgeInsets.only(top: 15.0),
                         onPaymentResult: onGooglePayResult,
