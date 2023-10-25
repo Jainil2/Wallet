@@ -1,5 +1,6 @@
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:wallet/Shared/loading.dart';
 import 'package:wallet/auth.dart';
 import 'Shared/constants.dart';
 
@@ -16,6 +17,7 @@ class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>(); 
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -23,7 +25,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? const Loading() :  Scaffold(
       backgroundColor: Colors.grey[350],
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -71,9 +73,13 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if(_formKey.currentState!.validate()) {
+                    setState(()=> loading = true);
                     dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                     if(result == null) {
-                      setState(()=> error = 'please enter a valid email');
+                      setState((){
+                        error = 'please enter a valid email';
+                        loading = false;
+                    });
                     }
                     // if (kDebugMode) {
                     //       print(email);
