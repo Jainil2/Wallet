@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet/auth.dart';
+import 'Shared/constants.dart';
 
 class Register extends StatefulWidget {
   // const Register({Key? key}) : super(key: key);
@@ -18,11 +19,12 @@ class _RegisterState extends State<Register> {
 
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[350],
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0.0,
@@ -45,6 +47,7 @@ class _RegisterState extends State<Register> {
             children: [
               const SizedBox(height: 20.0),
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
                   setState(() => email = val);
@@ -52,6 +55,7 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 20.0),
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 obscureText: true,
                 validator: (val) => val!.length < 6 ? 'Enter a passeord with 6+ chars long' : null,
                 onChanged: (val) {
@@ -67,16 +71,25 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if(_formKey.currentState!.validate()) {
-                    if (kDebugMode) {
-                          print(email);
-                          print(password);
+                    dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                    if(result == null) {
+                      setState(()=> error = 'please enter a valid email');
                     }
+                    // if (kDebugMode) {
+                    //       print(email);
+                    //       print(password);
+                    // }
                   }
                 },
                 child: const Text('Register',
                     style: TextStyle(
                       color: Colors.white,
                     )),
+              ),
+              const SizedBox(height: 12.0,),
+              Text(
+                error,
+                style: const TextStyle(color: Colors.red,fontSize: 14.0)
               )
             ],
           ))),

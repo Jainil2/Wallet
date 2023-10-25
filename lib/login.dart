@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet/auth.dart';
+import 'Shared/constants.dart';
 
 class SignIn extends StatefulWidget {
   // const SignIn({Key? key}) : super(key: key);
@@ -9,17 +10,15 @@ class SignIn extends StatefulWidget {
   // final Function toggleView;
   // SignIn({super.key,required this.toggleView});
   // final toggleView;
-  // const SignIn({Key? key, this.toggleView}) : super(key: key);  
+  // const SignIn({Key? key, this.toggleView}) : super(key: key);
   final Function toggleView;
   const SignIn({super.key, required this.toggleView});
-
 
   @override
   State<SignIn> createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-
   final AuthService _auth = AuthService();
 
   String email = '';
@@ -28,7 +27,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor : Colors.white,
+      backgroundColor: Colors.grey[350],
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0.0,
@@ -37,52 +36,52 @@ class _SignInState extends State<SignIn> {
           TextButton.icon(
             onPressed: () {
               widget.toggleView();
-            }, 
-            icon: const Icon(Icons.person), 
+            },
+            icon: const Icon(Icons.person),
             label: const Text('Register'),
           )
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(child: Column(
-          children: [
-            const SizedBox(height: 20.0),
-            TextFormField(
-              onChanged: (val) {
-                setState(() => email = val);
-              },
-            ),
-            const SizedBox(height: 20.0),
-            TextFormField(
-              obscureText: true,
-              onChanged: (val) {
-                setState(() => password = val);
-              },
-            ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0))),
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Form(
+              child: Column(
+            children: [
+              const SizedBox(height: 20.0),
+              TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                onChanged: (val) {
+                  setState(() => email = val);
+                },
               ),
-              onPressed: () async {
-                if (kDebugMode) {
-                  print(email);
-                  print(password);
-                }
-            }, 
-            child: const Text(
-              'Sign in',
-              style: TextStyle(
-                color: Colors.white,
+              const SizedBox(height: 20.0),
+              TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                obscureText: true,
+                onChanged: (val) {
+                  setState(() => password = val);
+                },
+              ),
+              const SizedBox(height: 20.0),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0))),
+                ),
+                onPressed: () async {
+                  if (kDebugMode) {
+                    print(email);
+                    print(password);
+                  }
+                },
+                child: const Text('Sign in',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
               )
-              ),
-            )
-          ],
-        ))
-      ),
+            ],
+          ))),
     );
   }
 }
