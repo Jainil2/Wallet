@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wallet/models/user.dart';
+import 'package:wallet/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -56,10 +57,33 @@ class AuthService {
     }
   }
   // register with email and password
+  // Future registerWithEmailAndPassword(String email, String password) async {
+  //   try {
+  //     UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  //     User? user = result.user;
+
+  //     await DatabaseService(uid: user?.uid).updateUserData(100, 'raj', 'movie');
+
+  //     return _userfromfirebaseUser(user);
+  //   } catch (error) {
+  //     if (kDebugMode) {
+  //       print(error.toString());
+  //     }
+  //     return null;
+  //   }
+  // }
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
+
+      if (user != null) {
+        // Only update data if the user is authenticated
+        await DatabaseService(uid: user.uid)
+            .updateUserData(100, 'raj', 'movie');
+      }
+
       return _userfromfirebaseUser(user);
     } catch (error) {
       if (kDebugMode) {
@@ -68,6 +92,7 @@ class AuthService {
       return null;
     }
   }
+
 
   // sign out
   Future signOut() async {
