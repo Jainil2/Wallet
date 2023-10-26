@@ -21,4 +21,9 @@ final String? uid;
       'time': time,
     });
   }
+
+
+  Stream<QuerySnapshot> get wallet {
+    return walletCollection.snapshots();
+  }
 }
